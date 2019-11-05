@@ -46,23 +46,12 @@ If all goes well you should see something like:
     Sleeping...
 
 
-## Viewing logs
-
-To view the gemstone logs first find your gemstone docker container id:
-
-    > docker container ls | grep gemstone
-    8922a14116d0        gemstone            "/bin/sh -c ./runGem…"   2 minutes ago       Up 2 minutes        0.0.0.0:40055->40055/tcp   mystifying_babbage
-    
-then use `cat` or `tail` to view the log:
-
-    > docker exec 8922a14116d0 cat /gemstone/GemStone64Bit3.5.0-x86_64.Linux/data/gs64stone.log
-
 ## Persistent data
 
-If you run the database as described above, your will disappear as
-soon as you stop the container.  This is typical of docker-based
-systems.  We need to provide persistent storage to the container so
-that your database can persist between runs.
+If you run the database as described above, your data will disappear
+as soon as you stop the container.  **Ouch.** This is typical of
+docker-based systems.  We need to provide persistent storage to the
+container so that your database can persist between runs.
 
 The supplied `Dockerfile` creates a directory /gemstone-data and
 places a single extent file in that directory.  The configuration file
@@ -103,6 +92,21 @@ This process depends on your cloud provider.  The steps are typically:
 4. Make sure that when your gemstone containers are launched by your provider, you have the volume mounted in the correct place on the compute instance and within the container.
 
 I will try to provide concrete examples when time permits.
+
+## Viewing logs
+
+To view the gemstone logs first find your gemstone docker container id:
+
+    > docker container ls | grep gemstone
+    8922a14116d0        gemstone            "/bin/sh -c ./runGem…"   2 minutes ago       Up 2 minutes        0.0.0.0:40055->40055/tcp   mystifying_babbage
+    
+then use `cat` or `tail` to view the log:
+
+    > docker exec 8922a14116d0 cat /gemstone/GemStone64Bit3.5.0-x86_64.Linux/data/gs64stone.log
+    
+## Backups
+
+TBD
 
 ### GemStone system configuration
 
