@@ -77,7 +77,7 @@ Create the volume:
 Whenever you run your gemstone server, specify the that the volume
 must be mounted:
 
-    docker run -it --rm --mount source=gemstone-vol,target=/gemstone-data gemstone
+    docker run -it --rm -p 40055:40055 --shm-size 1G --mount source=gemstone-vol,target=/gemstone-data gemstone
     
 Note that you can access this volume in any docker container by
 mounting the volume when you launch the container.
