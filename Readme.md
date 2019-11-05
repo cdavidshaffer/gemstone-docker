@@ -1,20 +1,24 @@
+# Gemstone in Docker
+
 GemStone is a powerful object-oriented database management system.
-See [GemTalk Systems home page](https://gemtalksystems.com/) for more
-information.
+See the [GemTalk Systems home page](https://gemtalksystems.com/) for
+more information.
 
 This repository contains files that can be used and extended to build
 a [docker](https://www.docker.com/) container to run GemStone.
 
-To use:
+## Getting started
 
-1. Download
+1. Clone this repository
+2. Download
 [GemStone64Bit3.5.0-x86_64.Linux.zip](https://gemtalksystems.com/products/gs64/versions35x/)
-from the GemTalk web site
-2. Build the docker image with
+from the GemTalk web site and place it in the directory created when
+you cloned this repository.
+3. Build the docker image with
 
         docker build . -t gemstone
 
-3. Run the docker image in a container with
+4. Run the docker image in a container with
 
         docker run -it -p 40055:40055 gemstone
 
@@ -40,4 +44,30 @@ If all goes well you should see something like:
     OK           3.5.0     gsadmin   Nov 05 19:35 Stone       gs64stone
     OK           3.5.0     gsadmin   Nov 05 19:35 cache       gs64stone~533fe7e9ef943228
     Sleeping...
+
+
+## Futher configuration
+
+### GemStone system configuration
+
+You can modify the `system.conf` file to suit your needs.
+Documentation is availble in the System Administration manual on the
+[GemStone web
+site](https://gemtalksystems.com/products/gs64/versions35x/).
+
+### Using a non-community key file
+
+The `Dockerfile` included in this repository builds an image that
+includes the GemStone community edition license (included when you
+downloaded the zip file above).  If you would like to build a docker
+image that uses a different key file, you can create a separate
+`Dockerfile` like:
+
+    FROM gemstone:latest
+    
+    USER gsadmin
+    COPY --chown=gsadmin:users gemstone.key /gemstone-keys
+
+Note that this `Dockerfile` assumes that you tagged the base GemStone
+docker image using the name `gemstone`.
 
