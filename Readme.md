@@ -20,7 +20,7 @@ you cloned this repository.
 
 4. Run the docker image in a container with
 
-        docker run -it -p 40055:40055 gemstone
+        docker run -it -p 40055:40055 --shm-size 1G gemstone
 
 If all goes well you should see something like:
 
