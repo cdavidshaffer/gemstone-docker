@@ -14,7 +14,7 @@ a [docker](https://www.docker.com/) container to run GemStone.
 [GemStone64Bit3.5.0-x86_64.Linux.zip](https://gemtalksystems.com/products/gs64/versions35x/)
 from the GemTalk web site and place it in the directory created when
 you cloned this repository.
-3. Build the docker image with
+3. Build a docker image with
 
         docker build . -t gemstone
 
@@ -46,7 +46,63 @@ If all goes well you should see something like:
     Sleeping...
 
 
-## Futher configuration
+## Viewing logs
+
+To view the gemstone logs first find your gemstone docker container id:
+
+    > docker container ls | grep gemstone
+    8922a14116d0        gemstone            "/bin/sh -c ./runGem…"   2 minutes ago       Up 2 minutes        0.0.0.0:40055->40055/tcp   mystifying_babbage
+    
+then use `cat` or `tail` to view the log:
+
+    > docker exec 8922a14116d0 cat /gemstone/GemStone64Bit3.5.0-x86_64.Linux/data/gs64stone.log
+
+## Persistent data
+
+If you run the database as described above, your will disappear as
+soon as you stop the container.  This is typical of docker-based
+systems.  We need to provide persistent storage to the container so
+that your database can persist between runs.
+
+The supplied `Dockerfile` creates a directory /gemstone-data and
+places a single extent file in that directory.  The configuration file
+`system.conf` specifies that this directory should be used to store
+all persistent GemStone data.  To persist data between invocations you
+can:
+* Use docker volumes -- this is probably the best way to maintain your
+  development database in a local docker volume.
+* Create permanent storage through your cloud provider and "mount" it
+  at that location.
+
+These options are described below.
+
+### Storing data in a docker volume
+
+Create the volume:
+
+    docker volume create gemstone-vol
+    docker run -it --rm --mount source=gemstone-vol,target=/gemstone-data gemstone /bin/bash
+    > cp ${GEMSTONE}/data/extent0.dbf /gemstone-data
+    > exit
+        
+Whenever you run your gemstone server, specify the that the volume
+must be mounted:
+
+    docker run -it --rm --mount source=gemstone-vol,target=/gemstone-data gemstone
+    
+Note that you can access this volume in any docker container by
+mounting the volume when you launch the container.
+    
+### Storing data in cloud provider's volume
+
+This process depends on your cloud provider.  The steps are typically:
+
+1. Allocate a persistent volume with ample size for your database.
+2. Attach the volume to a "compute instance" of some kind.
+3. Copy the default extent0.db file to the volume
+4. Make sure that when your gemstone containers are launched by your provider, you have the volume mounted in the correct place on the compute instance and within the container.
+
+I will try to provide concrete examples when time permits.
 
 ### GemStone system configuration
 
@@ -70,4 +126,19 @@ image that uses a different key file, you can create a separate
 
 Note that this `Dockerfile` assumes that you tagged the base GemStone
 docker image using the name `gemstone`.
+
+### Using a "secret" for your key file
+
+Most cloud platforms support secure storage of "secrets."  Examples:
+[Docker Swarm secrets](https://docs.docker.com/engine/swarm/secrets/),
+[Kubernetes
+secrets](https://kubernetes.io/docs/concepts/configuration/secret/),
+[AWS secrets](https://aws.amazon.com/secrets-manager/).  [GCP secrets
+management](https://cloud.google.com/solutions/secrets-management/)
+
+If you prefer to place your GemStone key file in one of those secrets
+systems, you simply need to make sure that the key is available as
+`/gemstone-keys/gemstone.key` when the gemstone container starts.  Most
+of these secrets management systems provide a way to "mount" your
+secrets inside the container.
 

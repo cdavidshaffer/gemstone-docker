@@ -40,6 +40,8 @@ RUN mkdir /gemstone-keys && \
 # Copy our configuration file
 COPY --chown=gsadmin:users system.conf /gemstone/GemStone64Bit3.5.0-x86_64.Linux/data
 
+RUN mkdir /gemstone-data && chown gsadmin:users /gemstone-data
+
 USER gsadmin
 
 COPY bashrc bashrc
@@ -49,6 +51,8 @@ ENV GEMSTONE=/gemstone/GemStone64Bit3.5.0-x86_64.Linux
 
 WORKDIR /gemstone/GemStone64Bit3.5.0-x86_64.Linux/install
 RUN ./installgs
+
+RUN cp -p /gemstone/GemStone64Bit3.5.0-x86_64.Linux/data/extent0.dbf /gemstone-data
 
 WORKDIR /gemstone
 COPY runGemstone /gemstone
