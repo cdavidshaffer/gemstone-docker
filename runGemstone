@@ -1,8 +1,14 @@
 #!/bin/bash
 
-${GEMSTONE}/bin/startnetldi -g -a gsadmin
-${GEMSTONE}/bin/startstone
-${GEMSTONE}/bin/gslist -v
+PATH=${GEMSTONE}/bin:${PATH}
 
-echo 'Sleeping...'
-sleep infinity
+startnetldi -g -a gsadmin
+startstone gs64stone
+
+
+while true; do
+    gslist -v
+    echo 'Sleeping...'
+    sleep 60
+done
+

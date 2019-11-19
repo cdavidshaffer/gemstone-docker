@@ -1,5 +1,5 @@
 FROM ubuntu:latest
-RUN apt update && apt install -y inetutils-ping unzip rpcbind
+RUN apt update && apt install -y inetutils-ping unzip rpcbind wget
 
 # Notes:
 #
@@ -26,16 +26,17 @@ RUN chown gsadmin:users /opt/gemstone
 COPY services /gemstone
 RUN cat /gemstone/services >>/etc/services && rm /gemstone/services
 
-COPY GemStone64Bit3.5.0-x86_64.Linux.zip /gemstone
 WORKDIR /gemstone
-RUN unzip GemStone64Bit3.5.0-x86_64.Linux.zip && chown -R gsadmin:users /gemstone
+RUN wget --progress=dot https://downloads.gemtalksystems.com/pub/GemStone64/3.5.0/GemStone64Bit3.5.0-x86_64.Linux.zip
+RUN unzip GemStone64Bit3.5.0-x86_64.Linux.zip \
+        && chown -R gsadmin:users /gemstone \
+        && rm GemStone64Bit3.5.0-x86_64.Linux.zip
 
 # Create the /gemstone-keys directory and copy the community starter
 # key there.
-RUN mkdir /gemstone-keys && \
-        cp /gemstone/GemStone64Bit3.5.0-x86_64.Linux/sys/community.starter.key \
-        /gemstone-keys/gemstone.key && \
-        chown -R gsadmin:users /gemstone-keys
+RUN mkdir /gemstone-keys \
+        && cp /gemstone/GemStone64Bit3.5.0-x86_64.Linux/sys/community.starter.key  /gemstone-keys/gemstone.key \
+        && chown -R gsadmin:users /gemstone-keys
 
 # Copy our configuration file
 COPY --chown=gsadmin:users system.conf /gemstone/GemStone64Bit3.5.0-x86_64.Linux/data
