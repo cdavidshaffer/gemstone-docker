@@ -4,16 +4,17 @@ GemStone is a powerful object-oriented database management system.
 See the [GemTalk Systems home page](https://gemtalksystems.com/) for
 more information.
 
+This **is not** an official GemTalk Systems LLC release, but my own
+independent repackaging.  The GemStone database license can be found
+at
+https://downloads.gemtalksystems.com/pub/GemStone_License_Agreement.pdf.
+
 This repository contains files that can be used and extended to build
 a [docker](https://www.docker.com/) container to run GemStone.
 
 ## Getting started
 
 1. Clone this repository
-2. Download
-[GemStone64Bit3.5.0-x86_64.Linux.zip](https://gemtalksystems.com/products/gs64/versions35x/)
-from the GemTalk web site and place it in the directory created when
-you cloned this repository.
 3. Build a docker image with
 
         docker build . -t gemstone
@@ -22,7 +23,7 @@ you cloned this repository.
 
         docker run -it -p 40055:40055 --shm-size 1G gemstone
 
-If all goes well you should see something like:
+If all goes well you should see something like (note that version number may be different):
 
     startnetldi[Info]: GemStone version '3.5.0'
     startnetldi[Info]: Starting GemStone network server 'gs64ldi'.
