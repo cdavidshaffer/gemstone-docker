@@ -1,7 +1,8 @@
 FROM ubuntu:latest
 RUN apt update \
         && apt upgrade -y \
-        && apt install --no-install-recommends -y inetutils-ping unzip rpcbind wget \
+        && apt install --no-install-recommends -y inetutils-ping unzip rpcbind wget ca-certificates \
+        && update-ca-certificates \
         && rm -rf /var/lib/apt/lists/*
 
 # Notes:
