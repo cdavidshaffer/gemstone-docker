@@ -105,7 +105,7 @@ Here is a startup script that I use:
 Similarly for shutdown (note: you may have to modify the gs version):
           #!/bin/sh
           
-          id=`docker ps | grep gemstone-trader | awk '{print $1}'`
+          id=`docker ps | grep gemstone | awk '{print $1}'`
           if [ "$id" == "" ]; then
              echo Not running
              exit 1
