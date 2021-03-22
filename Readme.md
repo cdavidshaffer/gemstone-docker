@@ -94,6 +94,30 @@ This process depends on your cloud provider.  The steps are typically:
 
 I will try to provide concrete examples when time permits.
 
+## Start/stopping server
+
+Here is a startup script that I use:
+     #!/bin/sh
+
+     docker run -d -p 40055:40055 --shm-size 1G --mount source=gemstone-data,target=/gemstone-data gemstone
+
+
+Similarly for shutdown (note: you may have to modify the gs version):
+          #!/bin/sh
+          
+          id=`docker ps | grep gemstone-trader | awk '{print $1}'`
+          if [ "$id" == "" ]; then
+             echo Not running
+             exit 1
+          fi
+
+          docker exec -it $id /gemstone/GemStone64Bit3.5.5-x86_64.Linux/bin/stopstone gs64stone SystemUser
+          docker exec -it $id '/gemstone/GemStone64Bit3.5.5-x86_64.Linux/bin/stopnetldi'
+
+          sleep 1 
+          docker stop $id
+
+
 ## Viewing logs
 
 To view the gemstone logs first find your gemstone docker container id:
