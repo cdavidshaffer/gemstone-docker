@@ -97,26 +97,31 @@ I will try to provide concrete examples when time permits.
 ## Start/stopping server
 
 Here is a startup script that I use:
-     #!/bin/sh
+```
+{
+#!/bin/sh
 
-     docker run -d -p 40055:40055 --shm-size 1G --mount source=gemstone-data,target=/gemstone-data gemstone
+docker run -d -p 40055:40055 --shm-size 1G --mount source=gemstone-data,target=/gemstone-data gemstone
+}
 
 
 Similarly for shutdown (note: you may have to modify the gs version):
-          #!/bin/sh
-          
-          id=`docker ps | grep gemstone | awk '{print $1}'`
-          if [ "$id" == "" ]; then
-             echo Not running
-             exit 1
-          fi
+```
+{
+#!/bin/sh
 
-          docker exec -it $id /gemstone/GemStone64Bit3.5.5-x86_64.Linux/bin/stopstone gs64stone SystemUser
-          docker exec -it $id '/gemstone/GemStone64Bit3.5.5-x86_64.Linux/bin/stopnetldi'
+id=`docker ps | grep gemstone | awk '{print $1}'`
+if [ "$id" == "" ]; then
+   echo Not running
+   exit 1
+fi
 
-          sleep 1 
-          docker stop $id
+docker exec -it $id /gemstone/GemStone64Bit3.5.5-x86_64.Linux/bin/stopstone gs64stone SystemUser
+docker exec -it $id '/gemstone/GemStone64Bit3.5.5-x86_64.Linux/bin/stopnetldi'
 
+sleep 1 
+docker stop $id
+}
 
 ## Viewing logs
 
