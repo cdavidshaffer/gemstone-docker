@@ -2,7 +2,7 @@
 
 PATH=${GEMSTONE}/bin:${PATH}
 
-startnetldi -g -a gsadmin
+startnetldi -g -a gsadmin -l ${CDS_GEMSTONE_NETLDI_LOG}
 startstone gs64stone
 
 
