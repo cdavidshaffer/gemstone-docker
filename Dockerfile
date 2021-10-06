@@ -22,6 +22,9 @@ RUN apt update \
 #
 #   Various environment variables are set so that the gemstone log files
 #   (not the database log) will be placed in /gemstone-log
+#
+#   This image contains a /gemstone-backup directory which is intended
+#   to be an external volume on which backups are made.
 #      
 
 # note that the user name gsadmin must be the same as the one in the
@@ -55,6 +58,7 @@ COPY --chown=gsadmin:users system.conf /gemstone/GemStone64Bit3.5.7-x86_64.Linux
 
 RUN mkdir /gemstone-data && chown gsadmin:users /gemstone-data
 RUN mkdir /gemstone-log && chown gsadmin:users /gemstone-log
+RUN mkdir /gemstone-backup && chown gsadmin:users /gemstone-backup
 
 USER gsadmin
 
