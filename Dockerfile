@@ -71,7 +71,7 @@ ENV GEMSTONE_ADMIN_GC_LOG_DIR=/gemstone-log
 ENV GEMSTONE_RECLAIM_GC_LOG_DIR=/gemstone-log
 ENV GEMSTONE_SYMBOL_GEM_LOG_DIR=/gemstone-log
 ENV CDS_GEMSTONE_NETLDI_LOG=/gemstone-log/netldi.log
-
+ENV CDS_GEMSTONE_NETLDI_CLIENT_LOG_DIR=/gemstone-log
 
 
 WORKDIR /gemstone/GemStone64Bit3.5.7-x86_64.Linux/install

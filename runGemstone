@@ -2,8 +2,8 @@
 
 PATH=${GEMSTONE}/bin:${PATH}
 
-startnetldi -g -a gsadmin -l ${CDS_GEMSTONE_NETLDI_LOG}
-startstone gs64stone
+startnetldi -g -a gsadmin -l ${CDS_GEMSTONE_NETLDI_LOG} -D ${CDS_GEMSTONE_NETLDI_CLIENT_LOG_DIR}
+startstone  gs64stone
 
 
 while true; do
